@@ -1,166 +1,126 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 200 30% 96%;
-    --foreground: 210 25% 15%;
-    --card: 0 0% 100%;
-    --card-foreground: 210 25% 15%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 25% 15%;
-    --primary: 210 100% 52%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 200 20% 92%;
-    --secondary-foreground: 210 25% 20%;
-    --muted: 200 15% 90%;
-    --muted-foreground: 210 10% 45%;
-    --accent: 200 20% 94%;
-    --accent-foreground: 210 25% 15%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 200 20% 85%;
-    --input: 200 20% 88%;
-    --ring: 210 100% 52%;
-    --radius: 1rem;
+:root {
+  /* Surfaces — warm-tinted near-black */
+  --bg-base:          oklch(9%  0.005 60);
+  --bg-surface:       oklch(13% 0.006 60);
+  --bg-raised:        oklch(17% 0.006 60);
+  --bg-hover:         oklch(20% 0.007 60);
 
-    /* Agent theme colors */
-    --agency-accent: 210 100% 52%;
-    --agency-accent-fg: 210 100% 42%;
-    --ceo-accent: 271 81% 56%;
-    --ceo-accent-fg: 271 70% 46%;
-    --pm-accent: 160 84% 39%;
-    --pm-accent-fg: 160 70% 32%;
+  /* Borders */
+  --border:           oklch(22% 0.005 60);
+  --border-subtle:    oklch(17% 0.005 60);
 
-    /* Surface layers */
-    --surface-0: 200 30% 97%;
-    --surface-1: 0 0% 100%;
-    --surface-2: 200 20% 94%;
-    --surface-3: 200 15% 90%;
+  /* Text */
+  --text-primary:     oklch(93% 0.005 60);
+  --text-secondary:   oklch(55% 0.006 60);
+  --text-tertiary:    oklch(35% 0.005 60);
 
-    /* Glass tokens */
-    --glass-bg: 0 0% 100% / 0.55;
-    --glass-border: 0 0% 100% / 0.7;
-    --glass-shadow: 210 40% 60% / 0.12;
+  /* Functional — success */
+  --success:          oklch(72% 0.22 145);
+  --success-bg:       oklch(16% 0.04 145);
+  --success-border:   oklch(30% 0.10 145);
 
-    --sidebar-background: 0 0% 100% / 0.4;
-    --sidebar-foreground: 210 10% 40%;
-    --sidebar-primary: 210 100% 52%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 200 20% 94%;
-    --sidebar-accent-foreground: 210 25% 15%;
-    --sidebar-border: 0 0% 100% / 0.5;
-    --sidebar-ring: 210 100% 52%;
-  }
-
-  .dark {
-    --background: 222 47% 5%;
-    --foreground: 210 20% 90%;
-    --card: 222 40% 8%;
-    --card-foreground: 210 20% 90%;
-    --popover: 222 40% 8%;
-    --popover-foreground: 210 20% 90%;
-    --primary: 210 100% 52%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 222 30% 14%;
-    --secondary-foreground: 210 20% 85%;
-    --muted: 222 25% 12%;
-    --muted-foreground: 210 15% 55%;
-    --accent: 222 25% 14%;
-    --accent-foreground: 210 20% 90%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 222 20% 16%;
-    --input: 222 20% 14%;
-    --ring: 210 100% 52%;
-
-    --agency-accent: 210 100% 52%;
-    --agency-accent-fg: 210 100% 62%;
-    --ceo-accent: 271 81% 56%;
-    --ceo-accent-fg: 271 70% 66%;
-    --pm-accent: 160 84% 39%;
-    --pm-accent-fg: 160 70% 50%;
-
-    --surface-0: 222 47% 5%;
-    --surface-1: 222 40% 8%;
-    --surface-2: 222 30% 12%;
-    --surface-3: 222 25% 16%;
-
-    --glass-bg: 222 40% 10% / 0.6;
-    --glass-border: 0 0% 100% / 0.08;
-    --glass-shadow: 222 50% 3% / 0.4;
-
-    --sidebar-background: 222 40% 6% / 0.7;
-    --sidebar-foreground: 210 15% 65%;
-    --sidebar-primary: 210 100% 52%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 222 25% 14%;
-    --sidebar-accent-foreground: 210 20% 90%;
-    --sidebar-border: 0 0% 100% / 0.06;
-    --sidebar-ring: 210 100% 52%;
-  }
+  /* Functional — danger */
+  --danger:           oklch(50% 0.22 25);
+  --danger-bg:        oklch(14% 0.04 25);
+  --danger-border:    oklch(28% 0.10 25);
 }
 
-@layer base {
-  * {
-    border-color: hsl(var(--border));
-  }
-  body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-    font-family: 'Inter', system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-@layer utilities {
-  .scrollbar-thin {
-    scrollbar-width: thin;
-    scrollbar-color: hsl(var(--surface-3)) transparent;
-  }
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+  font-kerning: normal;
+}
 
-  /* === GLASS SYSTEM === */
-  .glass {
-    background: hsla(var(--glass-bg));
-    border: 1px solid hsla(var(--glass-border));
-    backdrop-filter: blur(20px) saturate(1.4);
-    -webkit-backdrop-filter: blur(20px) saturate(1.4);
-    box-shadow: 0 8px 32px hsla(var(--glass-shadow)),
-                inset 0 1px 0 hsla(0, 0%, 100%, 0.4);
-  }
-  .dark .glass {
-    box-shadow: 0 8px 32px hsla(var(--glass-shadow)),
-                inset 0 1px 0 hsla(0, 0%, 100%, 0.04);
-  }
+/* Hard shadow utilities */
+.shadow-hard    { box-shadow: 2px 2px 0 oklch(0% 0 0); }
+.shadow-hard-sm { box-shadow: 1px 1px 0 oklch(0% 0 0); }
 
-  .glass-subtle {
-    background: hsla(0, 0%, 100%, 0.35);
-    border: 1px solid hsla(0, 0%, 100%, 0.5);
-    backdrop-filter: blur(12px) saturate(1.2);
-    -webkit-backdrop-filter: blur(12px) saturate(1.2);
-    box-shadow: 0 4px 16px hsla(var(--glass-shadow));
-  }
-  .dark .glass-subtle {
-    background: hsla(222, 40%, 12%, 0.5);
-    border: 1px solid hsla(0, 0%, 100%, 0.06);
-  }
+/* Hover color transition — replaces inline event handlers */
+.hover-text-primary { color: var(--text-secondary); transition: color 0.15s; }
+.hover-text-primary:hover { color: var(--text-primary); }
 
-  .glass-strong {
-    background: hsla(0, 0%, 100%, 0.7);
-    border: 1px solid hsla(0, 0%, 100%, 0.8);
-    backdrop-filter: blur(24px) saturate(1.5);
-    -webkit-backdrop-filter: blur(24px) saturate(1.5);
-    box-shadow: 0 8px 32px hsla(var(--glass-shadow)),
-                inset 0 1px 0 hsla(0, 0%, 100%, 0.6);
-  }
-  .dark .glass-strong {
-    background: hsla(222, 40%, 10%, 0.8);
-    border: 1px solid hsla(0, 0%, 100%, 0.08);
-    box-shadow: 0 8px 32px hsla(var(--glass-shadow)),
-                inset 0 1px 0 hsla(0, 0%, 100%, 0.04);
-  }
+/* Terminal input — focus ring replacement for outline-none */
+.input-mono:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 1px var(--text-primary);
+}
+
+/* ── Action buttons ──────────────────────────────────────────────────────── */
+
+.btn-action {
+  font-family: var(--font-geist-mono);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+.btn-action:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
+/* Primary — success */
+.btn-ok {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  padding: 12px 24px;
+  border: 1px solid var(--success-border);
+  background: var(--success-bg);
+  color: var(--success);
+  box-shadow: 2px 2px 0 oklch(0% 0 0);
+}
+.btn-ok:hover {
+  background: var(--success);
+  color: var(--bg-base);
+  box-shadow: none;
+}
+
+/* Secondary */
+.btn-dim {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+}
+.btn-dim:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+/* Primary — danger */
+.btn-err {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  padding: 12px 24px;
+  border: 1px solid var(--danger-border);
+  background: var(--danger-bg);
+  color: var(--danger);
+  box-shadow: 2px 2px 0 oklch(0% 0 0);
+}
+.btn-err:hover {
+  background: var(--danger);
+  color: var(--bg-base);
+  box-shadow: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse        { animation: none; }
+  .btn-action           { transition: none; }
+  .hover-text-primary   { transition: none; }
 }
