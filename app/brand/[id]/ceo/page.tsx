@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Loader2, UploadCloud } from "lucide-react";
 import { toast } from "sonner";
 import VectorCard from "@/components/njm/VectorCard";
 import AgentConsole from "@/components/njm/AgentConsole";
 import { useAgentConsole } from "@/hooks/useAgentConsole";
+import CEOShield from "@/components/njm/CEOShield";
 import {
   Dialog,
   DialogContent,
@@ -66,6 +67,61 @@ export default function CEOWorkspacePage({
 
   const agentConsole = useAgentConsole();
 
+  const sessionIdRef = useRef<string>(
+    typeof crypto !== "undefined" ? crypto.randomUUID() : "dev-session-1"
+  );
+
+  const [submitting, setSubmitting] = useState(false);
+  const [terminalExitMessage, setTerminalExitMessage] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (agentConsole.logs.length > 0) {
+      setSubmitting(false);
+    }
+  }, [agentConsole.logs.length]);
+
+  const shieldOpen =
+    agentConsole.actionRequired?.trigger === "BLOQUEO_CEO";
+
+  async function handleApprove() {
+    setSubmitting(true);
+    setTerminalExitMessage(undefined);
+    try {
+      await agentConsole.resume("APPROVED", {
+        brand_id: params.id,
+        session_id: sessionIdRef.current,
+      });
+      agentConsole.invoke("ceo-audit", {
+        brand_id: params.id,
+        session_id: sessionIdRef.current,
+      });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Error desconocido";
+      toast.error(`Error al aprobar: ${msg}`);
+      setSubmitting(false);
+    }
+  }
+
+  async function handleReject() {
+    setSubmitting(true);
+    setTerminalExitMessage("SESIÓN CERRADA — RECHAZADA POR CEO");
+    try {
+      await agentConsole.resume("REJECTED", {
+        brand_id: params.id,
+        session_id: sessionIdRef.current,
+      });
+      agentConsole.invoke("ceo-reject", {
+        brand_id: params.id,
+        session_id: sessionIdRef.current,
+      });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Error desconocido";
+      toast.error(`Error al rechazar: ${msg}`);
+      setSubmitting(false);
+      setTerminalExitMessage(undefined);
+    }
+  }
+
   function handleCargarDoc(vectorId: string) {
     setActiveVectorId(vectorId);
     setManualInput("");
@@ -74,13 +130,17 @@ export default function CEOWorkspacePage({
   }
 
   function handleInvocarCEO() {
-    agentConsole.invoke("ceo-audit");
+    agentConsole.invoke("ceo-audit", {
+      brand_id: params.id,
+      session_id: sessionIdRef.current,
+    });
   }
 
   async function handleIngest() {
     if (!selectedFile && !manualInput.trim()) return;
 
     const formData = new FormData();
+    formData.append("brand_id", params.id);
     if (selectedFile) formData.append("file", selectedFile);
     if (manualInput.trim()) formData.append("context", manualInput.trim());
     if (activeVectorId) formData.append("vectorId", activeVectorId);
@@ -225,6 +285,17 @@ export default function CEOWorkspacePage({
         agentLabel="CEO Audit"
         logs={agentConsole.logs}
         running={agentConsole.running}
+        exitMessage={terminalExitMessage}
+      />
+
+      {/* CEO Shield */}
+      <CEOShield
+        open={shieldOpen}
+        onOpenChange={() => {}}
+        riskMessage={agentConsole.actionRequired?.risk_message}
+        onApprove={handleApprove}
+        onReject={handleReject}
+        submitting={submitting}
       />
 
       {/* Floating CTA */}
